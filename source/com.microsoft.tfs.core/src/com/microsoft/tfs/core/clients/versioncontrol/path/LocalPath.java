@@ -5,6 +5,8 @@ package com.microsoft.tfs.core.clients.versioncontrol.path;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Collator;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -312,8 +314,11 @@ public abstract class LocalPath {
             return true;
         }
 
-        final File parent = new File(parentPath);
-        final File child = new File(possibleChild);
+
+		Path parentNioPath = Paths.get(parentPath).normalize();
+		Path childNioPathPath = Paths.get(possibleChild).normalize();
+
+		return childNioPathPath.startsWith(parentNioPath);
 
         /*
          * This may be less efficient than is otherwise possible, but it should
@@ -322,6 +327,10 @@ public abstract class LocalPath {
          * along the way. If it matches the given parentPath, the possible child
          * is indeed a child.
          */
+
+
+		/*final File parent = new File(parentPath);
+		final File child = new File(possibleChild);
 
         File tmp = child.getParentFile();
         while (tmp != null) {
@@ -334,8 +343,7 @@ public abstract class LocalPath {
             // Keep walking back up.
             tmp = tmp.getParentFile();
         }
-
-        return false;
+        return false;*/
     }
 
     /**
