@@ -31,6 +31,8 @@
 
 package com.microsoft.tfs.core.httpclient.params;
 
+import com.microsoft.tfs.core.httpclient.*;
+
 /**
  * This class represents a collection of HTTP protocol parameters applicable to
  * {@link com.microsoft.tfs.core.httpclient.HttpClient instances of HttpClient}.
@@ -143,7 +145,8 @@ public class HttpClientParams extends HttpMethodParams {
      * @return timeout in milliseconds.
      */
     public long getConnectionManagerTimeout() {
-        return getLongParameter(CONNECTION_MANAGER_TIMEOUT, 0);
+        //return getLongParameter(CONNECTION_MANAGER_TIMEOUT, 0);
+		return 0;
     }
 
     /**
@@ -169,7 +172,8 @@ public class HttpClientParams extends HttpMethodParams {
      */
     @SuppressWarnings("rawtypes")
     public Class getConnectionManagerClass() {
-        return (Class) getParameter(CONNECTION_MANAGER_CLASS);
+    	return SimpleHttpConnectionManager.class;
+        //return (Class) getParameter(CONNECTION_MANAGER_CLASS);
     }
 
     /**
@@ -194,7 +198,12 @@ public class HttpClientParams extends HttpMethodParams {
      */
     @SuppressWarnings("rawtypes")
     public Class[] getPreemptiveAuthenticationTypes() {
-        return (Class[]) getParameter(PREEMPTIVE_AUTHENTICATION_CREDENTIAL_TYPES);
+    	Class[] classes = new Class[3];
+    	classes[0] = CookieCredentials.class;
+    	classes[1] = JwtCredentials.class;
+    	classes[2] = PreemptiveUsernamePasswordCredentials.class;
+    	return classes;
+        //return (Class[]) getParameter(PREEMPTIVE_AUTHENTICATION_CREDENTIAL_TYPES);
     }
 
     /**
